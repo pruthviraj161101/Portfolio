@@ -1,0 +1,17 @@
+# Netlify Configuration File
+# This file provides default settings for deploying this React SPA on Netlify.
+
+[build]
+  # Directory where production-ready compiled assets will be placed
+  publish = "dist"
+
+  # Command to build the React application
+  command = "npm run build"
+
+# Redirect rule to support Single Page Application (SPA) routing.
+# This prevents Netlify from throwing 404 errors when a user refreshes or
+# visits direct deep-links of the application.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
