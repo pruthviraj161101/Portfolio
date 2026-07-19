@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Mail, Linkedin, Twitter, Settings } from 'lucide-react';
+import { Mail, Linkedin, Settings } from 'lucide-react';
 import { ProfileData, TabType } from '../types';
 
 interface NavbarProps {
@@ -115,16 +115,6 @@ export default function Navbar({
           >
             <Linkedin className="w-3.5 h-3.5" />
             <span className="hidden lg:inline text-[10px] tracking-widest font-mono">LINKEDIN</span>
-          </a>
-          <a
-            id="social-twitter"
-            href="https://x.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-peach-accent transition-colors flex items-center gap-1.5 hover:scale-105"
-          >
-            <Twitter className="w-3.5 h-3.5" />
-            <span className="hidden lg:inline text-[10px] tracking-widest font-mono">X / TWITTER</span>
           </a>
         </div>
 

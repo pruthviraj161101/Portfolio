@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Radio, Sparkles, Monitor, Layers } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface CenterpieceProps {
   imagePath: string;
@@ -9,50 +8,46 @@ interface CenterpieceProps {
 }
 
 export default function Centerpiece({ imagePath, ambientSound, setAmbientSound }: CenterpieceProps) {
-  const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [imgSrc, setImgSrc] = useState(imagePath);
-  const [fallbackCount, setFallbackCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [imgSrc, setImgSrc] = useState('https://i.ibb.co/j9Ghmhny/image.png');
+  const [fallbackCount, setFallbackCount] = useState(0);
 
   useEffect(() => {
-    setImgSrc(imagePath);
+    if (imagePath.includes('j9Ghmhny')) {
+      setImgSrc('https://i.ibb.co/j9Ghmhny/image.png');
+    } else if (imagePath.includes('NdQbsRYK')) {
+      setImgSrc('https://i.ibb.co/NdQbsRYK/image.jpg');
+    } else {
+      setImgSrc(imagePath);
+    }
     setFallbackCount(0);
   }, [imagePath]);
 
   const handleImageError = () => {
+    const isJ9Ghmhny = imagePath.includes('j9Ghmhny');
     if (fallbackCount === 0) {
-      // Try png extension with NdQbsRYK
-      setImgSrc('https://i.ibb.co/NdQbsRYK/image.png');
+      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhny/image.jpg' : 'https://i.ibb.co/NdQbsRYK/image.png');
       setFallbackCount(1);
     } else if (fallbackCount === 1) {
-      // Try jpeg/jpg extension with NdQbsRYK
-      setImgSrc('https://i.ibb.co/NdQbsRYK/image.jpeg');
+      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhny/image.jpeg' : 'https://i.ibb.co/NdQbsRYK/image.jpeg');
       setFallbackCount(2);
     } else if (fallbackCount === 2) {
-      // Try webp extension with NdQbsRYK
-      setImgSrc('https://i.ibb.co/NdQbsRYK/image.webp');
+      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhny/image.webp' : 'https://i.ibb.co/NdQbsRYK/image.webp');
       setFallbackCount(3);
     } else if (fallbackCount === 3) {
-      // Try 7-character ID NdQbsRY in case of trailing character typo
-      setImgSrc('https://i.ibb.co/NdQbsRY/image.jpg');
+      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhn/image.png' : 'https://i.ibb.co/NdQbsRY/image.jpg');
       setFallbackCount(4);
     } else if (fallbackCount === 4) {
-      // Try png for 7-character ID
-      setImgSrc('https://i.ibb.co/NdQbsRY/image.png');
+      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhn/image.jpg' : 'https://i.ibb.co/NdQbsRY/image.png');
       setFallbackCount(5);
     } else if (fallbackCount === 5) {
-      // Try jpeg for 7-character ID
-      setImgSrc('https://i.ibb.co/NdQbsRY/image.jpeg');
+      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhn/image.webp' : 'https://i.ibb.co/NdQbsRY/image.webp');
       setFallbackCount(6);
     } else if (fallbackCount === 6) {
-      // Try webp for 7-character ID
-      setImgSrc('https://i.ibb.co/NdQbsRY/image.webp');
-      setFallbackCount(7);
-    } else if (fallbackCount === 7) {
-      // Final absolute fallback to original local avatar
       setImgSrc('/src/assets/images/creative_director_avatar_user_1784373635262.jpg');
-      setFallbackCount(8);
+      setFallbackCount(7);
     }
   };
   
@@ -75,7 +70,6 @@ export default function Centerpiece({ imagePath, ambientSound, setAmbientSound }
 
   const handleMouseLeave = () => {
     setMousePos({ x: 0, y: 0 });
-    setActiveHotspot(null);
   };
 
   // Synthesize Cozy Lo-fi Ambient Synth & Vinyl Crackle
@@ -207,33 +201,6 @@ export default function Centerpiece({ imagePath, ambientSound, setAmbientSound }
     };
   }, [ambientSound]);
 
-  const hotspots = [
-    {
-      id: 'monitor',
-      top: '55%',
-      left: '42%',
-      title: 'Vesper Spatial Screen',
-      desc: 'Active Workspace: Designing 3D canvas layouts inside Figma. Project Vesper 2026.',
-      icon: <Monitor className="w-3.5 h-3.5" />
-    },
-    {
-      id: 'art',
-      top: '28%',
-      left: '68%',
-      title: 'Framed Abstract Art',
-      desc: '"Vessel of Thoughts" — a custom physical painting in acrylic on raw canvas. Inspired by Brutalism.',
-      icon: <Layers className="w-3.5 h-3.5" />
-    },
-    {
-      id: 'headphones',
-      top: '46%',
-      left: '28%',
-      title: 'Audio Environment',
-      desc: 'Listening to "Cozy Cabin Vinyl" (Synthesized at 65Hz & 98Hz with retro needle crackle).',
-      icon: <Radio className="w-3.5 h-3.5" />
-    }
-  ];
-
   return (
     <div 
       id="centerpiece-root"
@@ -264,9 +231,9 @@ export default function Centerpiece({ imagePath, ambientSound, setAmbientSound }
         }}
       >
         {/* Subtle inner viewport shadow / lighting overlays */}
-        <div className="absolute inset-0 z-10 pointer-events-none border border-white/5 rounded-[32px]" />
-        <div className="absolute inset-0 vignette-overlay mix-blend-multiply z-10 opacity-70 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-cozybrown-950/80 via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 z-0 pointer-events-none border border-white/5 rounded-[32px]" />
+        <div className="absolute inset-0 vignette-overlay mix-blend-multiply z-0 opacity-70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-cozybrown-950/80 via-transparent to-transparent z-0 pointer-events-none" />
 
         {/* 3D Character Image with Parallax */}
         <motion.img
@@ -275,104 +242,14 @@ export default function Centerpiece({ imagePath, ambientSound, setAmbientSound }
           onError={handleImageError}
           alt="Design Director 3D Character Illustration"
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover select-none scale-105 pointer-events-none transition-transform duration-700 ease-out"
+          className="w-full h-full object-cover select-none scale-105 pointer-events-none transition-transform duration-700 ease-out z-10 blur-0 filter-none"
           style={{
             transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -15}px) scale(1.08)`,
           }}
         />
 
-        {/* Cinematic light sweep across the portrait */}
+        {/* Cinematic light sweep across the card */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-peach-glow to-transparent opacity-20 -translate-x-full group-hover:translate-x-full transition-transform duration-2000 ease-in-out pointer-events-none z-10" />
-
-        {/* Interactive Hotspots */}
-        {hotspots.map((h) => {
-          const isActive = activeHotspot === h.id;
-          return (
-            <div
-              key={h.id}
-              id={`hotspot-${h.id}`}
-              className="absolute z-20"
-              style={{
-                top: h.top,
-                left: h.left,
-                transform: 'translate(-50%, -50%)'
-              }}
-            >
-              {/* Pulsing Hotspot Marker */}
-              <button
-                id={`btn-hotspot-${h.id}`}
-                onMouseEnter={() => setActiveHotspot(h.id)}
-                className="relative flex items-center justify-center w-7 h-7 rounded-full bg-warmblack/80 border border-peach-accent/75 hover:bg-peach-accent hover:text-warmblack text-peach-accent shadow-lg shadow-black/50 transition-all duration-300 scale-90 group-hover:scale-100"
-              >
-                {/* Ping rings */}
-                <span className="absolute inline-flex h-full w-full rounded-full bg-peach-accent/30 animate-ping opacity-75" />
-                <Sparkles className="w-3 h-3 animate-pulse" />
-              </button>
-
-              {/* Tooltip Card (AnimatePresence) */}
-              <AnimatePresence>
-                {isActive && (
-                  <motion.div
-                    id={`tooltip-${h.id}`}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                    transition={{ duration: 0.25 }}
-                    className="absolute bottom-9 left-1/2 -translate-x-1/2 w-56 p-3 rounded-xl bg-cozybrown-950/90 backdrop-blur-md border border-peach-accent/25 text-cream shadow-2xl z-30"
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-peach-accent">{h.icon}</span>
-                      <h4 className="text-[11px] font-bold tracking-widest font-mono uppercase">{h.title}</h4>
-                    </div>
-                    <p className="text-[10px] text-cozybrown-200 leading-relaxed font-sans">{h.desc}</p>
-                    {/* Subtle micro tip indicator */}
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-cozybrown-950 border-r border-b border-peach-accent/20" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
-
-        {/* Ambient Synthesizer Equalizer & Audio Toggle Overlay */}
-        <div 
-          id="audio-indicator-panel"
-          className="absolute bottom-4 left-4 z-20 flex items-center gap-3 bg-cozybrown-950/70 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-cozybrown-800/40 select-none"
-        >
-          <button
-            id="btn-toggle-ambient-sound"
-            onClick={() => setAmbientSound(!ambientSound)}
-            className={`p-1.5 rounded-lg transition-all duration-300 ${
-              ambientSound ? 'bg-peach-accent text-warmblack scale-105' : 'bg-cozybrown-900/50 text-cozybrown-400 hover:text-cream'
-            }`}
-            title={ambientSound ? "Mute Studio Music" : "Play Cozy Studio Ambient Sound"}
-          >
-            {ambientSound ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-          </button>
-          
-          <div className="flex flex-col">
-            <span className="text-[8px] tracking-widest font-mono text-cozybrown-400 uppercase leading-none">Ambient Sound</span>
-            <span className="text-[9px] font-bold text-cream font-mono mt-0.5 leading-none">
-              {ambientSound ? "65Hz Drone Active" : "Sound Muted"}
-            </span>
-          </div>
-
-          {/* Graphical Equalizer Bars */}
-          {ambientSound && (
-            <div className="flex items-end gap-0.5 h-4 w-6 px-1">
-              <motion.div animate={{ height: [4, 14, 6, 12, 4] }} transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }} className="w-0.5 bg-peach-accent rounded-full" />
-              <motion.div animate={{ height: [8, 4, 16, 8, 8] }} transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut" }} className="w-0.5 bg-peach-accent rounded-full" />
-              <motion.div animate={{ height: [6, 12, 4, 14, 6] }} transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut" }} className="w-0.5 bg-peach-accent rounded-full" />
-              <motion.div animate={{ height: [12, 6, 10, 4, 12] }} transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }} className="w-0.5 bg-peach-accent rounded-full" />
-            </div>
-          )}
-        </div>
-
-        {/* Hover Cue */}
-        <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Sparkles className="w-2.5 h-2.5 text-peach-accent" />
-          <span className="text-[8px] font-bold tracking-widest font-mono text-peach-light">EXPLORE DESK</span>
-        </div>
       </motion.div>
     </div>
   );
