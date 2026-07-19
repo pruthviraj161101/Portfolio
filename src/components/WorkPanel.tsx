@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ExternalLink, Calendar, Layers, Eye, EyeOff, Youtube } from 'lucide-react';
+import { X, ExternalLink, Calendar, Layers, Youtube } from 'lucide-react';
 import { portfolioWorks } from '../data';
 import { WorkItem } from '../types';
 
@@ -12,7 +12,6 @@ interface WorkPanelProps {
 
 export default function WorkPanel({ isOpen, onClose }: WorkPanelProps) {
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
-  const [showGridLines, setShowGridLines] = useState(false);
 
   if (!isOpen) return null;
 
@@ -24,38 +23,9 @@ export default function WorkPanel({ isOpen, onClose }: WorkPanelProps) {
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-warmblack/95 backdrop-blur-xl z-50 overflow-y-auto px-6 py-24 md:px-16 lg:px-24"
     >
-      {/* Editorial Grid Guides Overlay */}
-      {showGridLines && (
-        <div id="composition-guides-overlay" className="absolute inset-0 pointer-events-none z-10 flex justify-between px-16 lg:px-24">
-          <div className="w-[1px] h-full bg-peach-accent/15 border-dashed border-r" />
-          <div className="w-[1px] h-full bg-peach-accent/10 border-dashed border-r hidden md:block" />
-          <div className="w-[1px] h-full bg-peach-accent/10 border-dashed border-r hidden md:block" />
-          <div className="w-[1px] h-full bg-peach-accent/15 border-dashed border-r" />
-          {/* Horizontal lines */}
-          <div className="absolute top-1/4 left-0 w-full h-[1px] bg-peach-accent/10 border-dashed border-b" />
-          <div className="absolute top-2/4 left-0 w-full h-[1px] bg-peach-accent/15 border-dashed border-b" />
-          <div className="absolute top-3/4 left-0 w-full h-[1px] bg-peach-accent/10 border-dashed border-b" />
-        </div>
-      )}
-
       <div className="max-w-6xl w-full mx-auto relative z-20">
         {/* Close and Inspect controls */}
         <div className="absolute -top-12 right-0 flex items-center gap-3">
-          {/* Composition Grid Inspect Button */}
-          <button
-            id="btn-toggle-grid-lines"
-            onClick={() => setShowGridLines(!showGridLines)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-mono transition-all duration-300 ${
-              showGridLines 
-                ? 'bg-peach-accent border-peach-accent text-warmblack font-bold' 
-                : 'bg-cozybrown-950/80 border-cozybrown-800 text-cozybrown-300 hover:text-cream'
-            }`}
-            title="Toggle Director Design Grid Overlay"
-          >
-            {showGridLines ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-            <span>{showGridLines ? "HIDE GUIDES" : "INSPECT GRIDS"}</span>
-          </button>
-
           <button
             id="btn-close-work-panel"
             onClick={onClose}
@@ -74,9 +44,6 @@ export default function WorkPanel({ isOpen, onClose }: WorkPanelProps) {
           <h2 className="text-4xl md:text-5xl font-display font-extrabold tracking-tight text-cream uppercase">
             SELECTED CREATIVE WORKS
           </h2>
-          <p className="text-xs font-mono text-cozybrown-400 mt-2">
-            *CLINK PROJECTS TO VIEW INTERACTIVE METRIC SHEETS & WIREFRAME INSIGHTS
-          </p>
         </div>
 
         {/* Selected Works list */}
@@ -189,21 +156,9 @@ export default function WorkPanel({ isOpen, onClose }: WorkPanelProps) {
                     </div>
                   )}
 
-                  <div className="p-4 rounded-xl bg-cozybrown-900/40 border border-cozybrown-800/60 text-[10px] font-mono text-peach-accent flex items-start gap-2.5">
-                    <span className="text-xs">⚡</span>
-                    <p className="leading-relaxed">
-                      Grid structure and interactive composition for this project have been fully verified. Ready for responsive layout integration.
-                    </p>
-                  </div>
+
                 </motion.div>
-              ) : (
-                <div className="p-12 rounded-3xl border border-dashed border-cozybrown-800 text-center flex flex-col items-center justify-center gap-4 text-cozybrown-400 min-h-[300px]">
-                  <Layers className="w-8 h-8 opacity-40 animate-pulse text-peach-accent" />
-                  <span className="text-xs font-mono uppercase tracking-widest">
-                    Select a project to inspect configuration details
-                  </span>
-                </div>
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
         </div>
