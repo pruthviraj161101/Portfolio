@@ -16,7 +16,7 @@ import { initialProfile, themeStyles } from './data';
 import { ProfileData, LightingTheme, TabType } from './types';
 
 // Let's resolve the exact generated image path
-const AVATAR_IMAGE_PATH = 'https://ibb.co/j9Ghmhny';
+const AVATAR_IMAGE_PATH = 'https://i.ibb.co/0pZqTqHC/Whats-App-Image-2026-07-18-at-4-47-26-PM.jpg';
 
 export default function App() {
   const [profile, setProfile] = useState<ProfileData>(initialProfile);

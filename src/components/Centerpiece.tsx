@@ -11,43 +11,49 @@ export default function Centerpiece({ imagePath, ambientSound, setAmbientSound }
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const [imgSrc, setImgSrc] = useState('https://i.ibb.co/j9Ghmhny/image.png');
+
+  const [imgSrc, setImgSrc] = useState('https://i.ibb.co/0pZqTqHC/Whats-App-Image-2026-07-18-at-4-47-26-PM.jpg');
   const [fallbackCount, setFallbackCount] = useState(0);
 
+  // Extract the ID from the ibb.co link if possible (e.g. "1Gm7vSzB")
+  const getIbbId = (path: string) => {
+    if (path.includes('1Gm7vSzB')) return '1Gm7vSzB';
+    if (path.includes('gMnF8r9K')) return 'gMnF8r9K';
+    if (path.includes('j9Ghmhny')) return 'j9Ghmhny';
+    const match = path.match(/ibb\.co\/([a-zA-Z0-9]+)/);
+    return match ? match[1] : null;
+  };
+
   useEffect(() => {
-    if (imagePath.includes('j9Ghmhny')) {
-      setImgSrc('https://i.ibb.co/j9Ghmhny/image.png');
-    } else if (imagePath.includes('NdQbsRYK')) {
-      setImgSrc('https://i.ibb.co/NdQbsRYK/image.jpg');
-    } else {
+    if (imagePath.includes('i.ibb.co') && (imagePath.toLowerCase().includes('.jpg') || imagePath.toLowerCase().includes('.png') || imagePath.toLowerCase().includes('.jpeg') || imagePath.toLowerCase().includes('.webp'))) {
       setImgSrc(imagePath);
+    } else {
+      const ibbId = getIbbId(imagePath);
+      if (ibbId === 'j9Ghmhny') {
+        setImgSrc('https://i.ibb.co/0pZqTqHC/Whats-App-Image-2026-07-18-at-4-47-26-PM.jpg');
+      } else if (ibbId) {
+        setImgSrc(`https://i.ibb.co/${ibbId}/image.png`);
+      } else {
+        setImgSrc(imagePath);
+      }
     }
     setFallbackCount(0);
   }, [imagePath]);
 
   const handleImageError = () => {
-    const isJ9Ghmhny = imagePath.includes('j9Ghmhny');
-    if (fallbackCount === 0) {
-      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhny/image.jpg' : 'https://i.ibb.co/NdQbsRYK/image.png');
-      setFallbackCount(1);
-    } else if (fallbackCount === 1) {
-      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhny/image.jpeg' : 'https://i.ibb.co/NdQbsRYK/image.jpeg');
-      setFallbackCount(2);
-    } else if (fallbackCount === 2) {
-      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhny/image.webp' : 'https://i.ibb.co/NdQbsRYK/image.webp');
-      setFallbackCount(3);
-    } else if (fallbackCount === 3) {
-      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhn/image.png' : 'https://i.ibb.co/NdQbsRY/image.jpg');
-      setFallbackCount(4);
-    } else if (fallbackCount === 4) {
-      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhn/image.jpg' : 'https://i.ibb.co/NdQbsRY/image.png');
-      setFallbackCount(5);
-    } else if (fallbackCount === 5) {
-      setImgSrc(isJ9Ghmhny ? 'https://i.ibb.co/j9Ghmhn/image.webp' : 'https://i.ibb.co/NdQbsRY/image.webp');
-      setFallbackCount(6);
-    } else if (fallbackCount === 6) {
-      setImgSrc('/src/assets/images/creative_director_avatar_user_1784373635262.jpg');
-      setFallbackCount(7);
+    const ibbId = getIbbId(imagePath) || 'j9Ghmhny';
+    const fallbacks = [
+      `https://i.ibb.co/${ibbId}/image.jpg`,
+      `https://i.ibb.co/${ibbId}/image.jpeg`,
+      `https://i.ibb.co/${ibbId}/image.webp`,
+      `https://i.ibb.co/${ibbId}/image.PNG`,
+      `https://i.ibb.co/${ibbId}/image.JPG`,
+      `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop`
+    ];
+
+    if (fallbackCount < fallbacks.length) {
+      setImgSrc(fallbacks[fallbackCount]);
+      setFallbackCount(prev => prev + 1);
     }
   };
   
